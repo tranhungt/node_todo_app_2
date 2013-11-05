@@ -9,9 +9,6 @@ module.exports =
       }
 
   create: (req, res) ->
-    console.log(req.body)
-    console.log(req.params)
-    console.log(req)
     todo_item = new TodoItem 
     todo_item.title = req.body.todo_title
     todo_item.save (err, todo_item) ->
@@ -27,3 +24,4 @@ module.exports =
         res.redirect "back"
       else
         res.render 'index'
+

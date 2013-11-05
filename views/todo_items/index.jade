@@ -3,7 +3,7 @@ block content
   .container
     form(action="/todo_items/create", method="post")
       label(for="new_todo_title") Enter Todo Item
-      input(id="new_todo_title", type="text", placeholder="new todo item", name="todo_title")
+      input#new_todo_title(type="text", placeholder="new todo item", name="todo_title")
       input(type="submit", value="save")
     
     ul
