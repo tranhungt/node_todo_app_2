@@ -1,4 +1,5 @@
 extends ../layout
+
 block content
   .container
     form(action="/todo_items/create", method="post")
@@ -6,7 +7,12 @@ block content
       input#new_todo_title(type="text", placeholder="new todo item", name="todo_title")
       input(type="submit", value="save")
     
-    ul
+    ul#todo_items
       each todo_item in todo_items
         li #{todo_item.title}
           a(href="/todo_items/delete/#{todo_item.id}") Delete
+
+  script.
+    $(function(){
+      console.log("what")
+    })
