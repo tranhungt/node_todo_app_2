@@ -22,7 +22,7 @@ app.configure 'production', 'development', 'testing', ->
 if app.settings.env != 'production'
   mongoose.connect 'mongodb://localhost/example'
 else
-  console.log('If you are running in production, you may want to modify the mongoose connect path')
+  mongoose.connect process.env.MONGOHQ_URL
 
 #### View initialization 
 # Add Connect Assets.

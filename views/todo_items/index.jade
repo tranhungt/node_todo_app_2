@@ -20,9 +20,13 @@ block content
       function openForm(evt){
         console.log(evt)
         $(evt.currentTarget).replaceWith("\
-          <form action='/todo_items/update/"+evt.currentTarget.id+"' method='post'> \
+          <form id='edit_title' action='/todo_items/update/"+evt.currentTarget.id+"' method='post'> \
           <input type='text' value='"+$(evt.currentTarget).text()+"' name='todo_title'/> \
-          ")
+          ");
+        $("#edit_title").blur(function(){
+          console.log("blurring");
+          $(this).html("<span> id='"+evt.currentTarget.id+"'"+$(evt.currentTarget).text()+"'" )
+        })
       }
       $('li span').bind('click', openForm)
       $("body").append(document.title)

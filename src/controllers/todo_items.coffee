@@ -31,6 +31,6 @@ module.exports =
       todo_item.save (err, todo_item) ->
         if not err
           res.statusCode = 201
-          res.redirect("back")
+          res.send(todo_item.title)
         else
           res.render 'index'
