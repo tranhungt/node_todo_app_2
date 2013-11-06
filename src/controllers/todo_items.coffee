@@ -25,3 +25,12 @@ module.exports =
       else
         res.render 'index'
 
+  update: (req, res) ->
+    todo_item = TodoItem.findById req.params.id, (err, todo_item) ->
+      todo_item.title = req.body.todo_title
+      todo_item.save (err, todo_item) ->
+        if not err
+          res.statusCode = 201
+          res.redirect("back")
+        else
+          res.render 'index'

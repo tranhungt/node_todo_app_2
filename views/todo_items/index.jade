@@ -2,6 +2,8 @@ extends ../layout
 
 block content
   .container
+    p something crazy over here before the dang thing
+      span.pq A pull quote
     form(action="/todo_items/create", method="post")
       label(for="new_todo_title") Enter Todo Item
       input#new_todo_title(type="text", placeholder="new todo item", name="todo_title")
@@ -9,10 +11,29 @@ block content
     
     ul#todo_items
       each todo_item in todo_items
-        li #{todo_item.title}
+        li 
+          span(id="#{todo_item.id}") #{todo_item.title}
           a(href="/todo_items/delete/#{todo_item.id}") Delete
 
   script.
     $(function(){
-      console.log("what")
+      function openForm(evt){
+        console.log(evt)
+        $(evt.currentTarget).replaceWith("\
+          <form action='/todo_items/update/"+evt.currentTarget.id+"' method='post'> \
+          <input type='text' value='"+$(evt.currentTarget).text()+"' name='todo_title'/> \
+          ")
+      }
+      $('li span').bind('click', openForm)
+      $("body").append(document.title)
+      // $("body").hide().fadeIn(3000)
+      pullquote = function(){
+        $("span.pq").each(function(){
+          var quote = $(this).clone();
+          quote.removeClass("pq").addClass("pullquote")
+          $(this).before(quote);
+          })
+      }
+      // $("p").replaceWith("<span class='pq'><p>" + $("p").html() + "</span></p>")
+      pullquote();
     })
