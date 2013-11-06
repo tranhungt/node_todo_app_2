@@ -19,9 +19,9 @@ app.configure 'production', 'development', 'testing', ->
 
 # db_config = "mongodb://#{config.DB_USER}:#{config.DB_PASS}@#{config.DB_HOST}:#{config.DB_PORT}/#{config.DB_NAME}"
 # mongoose.connect db_config
-if app.settings.env != 'production'
-  mongoose.connect 'mongodb://localhost/example'
-else
+# if app.settings.env != 'production'
+  # mongoose.connect 'mongodb://localhost/example'
+# else
   mongoose.connect process.env.MONGOHQ_URL
 
 #### View initialization 
