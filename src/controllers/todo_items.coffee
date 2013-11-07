@@ -10,18 +10,20 @@ module.exports =
 
   create: (req, res) ->
     todo_item = new TodoItem 
+    console.log req.body
     todo_item.title = req.body.todo_title
     todo_item.save (err, todo_item) ->
       if not err
         res.statusCode = 201
-        res.redirect("back")
+        res.json todo_item
       else
         res.render 'index'
 
   delete: (req, res) ->
-    todo_item = TodoItem.findByIdAndRemove req.params.id, (err) ->
+    item_id = req.params.id
+    todo_item = TodoItem.findByIdAndRemove item_id, (err) ->
       if not err
-        res.redirect "back"
+        res.send({item_id: item_id})
       else
         res.render 'index'
 

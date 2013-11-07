@@ -2,8 +2,6 @@ extends ../layout
 
 block content
   .container
-    p something crazy over here before the dang thing
-      span.pq A pull quote
     form(id="new_item_form", action="/todo_items/create", method="post")
       label(for="new_todo_title") Enter Todo Item
       input#new_todo_title(type="text", placeholder="new todo item", name="todo_title")
@@ -11,16 +9,14 @@ block content
     
     ul#todo_items
       each todo_item in todo_items
-        li 
-          span(id="#{todo_item.id}") #{todo_item.title}
-          a(href="/todo_items/delete/#{todo_item.id}") Delete
+        li(id="#{todo_item.id}") 
+          span(class="item") #{todo_item.title}
+          a(class="delete_button", href="/todo_items/delete/#{todo_item.id}", data-id="#{todo_item.id}") Delete
 
   script.
     $(function(){
-      // $("#new_todo_form").blur(function(){
-      //   console.log("blurring");
-      // })
       $("#new_todo_title").focus();
+      
       function openForm(evt){
         console.log(evt)  
         $(evt.currentTarget).replaceWith("\
@@ -30,19 +26,45 @@ block content
         $("#title_edit_field").focus();
         $("#title_edit_field").blur(function(){
           console.log("blurring");
-          $(this.form).replaceWith("<span id='"+evt.currentTarget.id+"'>"+$(evt.currentTarget).text()+"</span>" )
+          $(this.form).replaceWith("<span class='item' id='"+evt.currentTarget.id+"'>"+$(evt.currentTarget).text()+"</span>" )
         })
       }
-      $('#todo_items').on('click', 'li span',openForm)
-      $("body").append(document.title)
-      // $("body").hide().fadeIn(3000)
-      pullquote = function(){
-        $("span.pq").each(function(){
-          var quote = $(this).clone();
-          quote.removeClass("pq").addClass("pullquote")
-          $(this).before(quote);
-          })
+
+      function submitNewTitle(evt){
+        return false;
+
       }
-      // $("p").replaceWith("<span class='pq'><p>" + $("p").html() + "</span></p>")
-      pullquote();
+
+      $('#todo_items').on('click', '.item', openForm);
+      //- $('#new_item_form').on('submit', submitNewTitle);
+
     })
+
+  :coffeescript
+    $ ->
+      console.log "hello from coffee"
+      htmlizeItem = (todo_item) ->
+          html_string = ""
+          html_string += "<li id='#{todo_item.id}'" 
+          html_string += "<span class='item'>#{todo_item.title}</span>"
+          html_string +="<a class='delete_button' href='/todo_items/delete/#{todo_item.id}' data-id='#{todo_item.id}'>Delete</a>"
+          html_string
+
+
+      $('#new_item_form').on 'submit', (evt) ->
+        $.post "/todo_items/create",
+          $(evt.currentTarget).serialize()
+          (item) ->
+            $("#todo_items").prepend(htmlizeItem(item))
+            $("#new_todo_title").val("");
+            $("#new_todo_title").blur();
+            $("#new_todo_title").focus();
+        false
+
+      $('#todo_items').on 'click', '.delete_button', (evt) ->
+        href = $(evt.currentTarget).attr('href')
+        item_id = $(evt.currentTarget).attr('data-id')
+        $.get(href).done (data) ->
+          $("##{data.item_id}").remove() 
+
+        false
