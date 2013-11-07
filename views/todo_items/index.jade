@@ -4,7 +4,7 @@ block content
   .container
     p something crazy over here before the dang thing
       span.pq A pull quote
-    form(action="/todo_items/create", method="post")
+    form(id="new_item_form", action="/todo_items/create", method="post")
       label(for="new_todo_title") Enter Todo Item
       input#new_todo_title(type="text", placeholder="new todo item", name="todo_title")
       input(type="submit", value="save")
@@ -17,15 +17,19 @@ block content
 
   script.
     $(function(){
+      // $("#new_todo_form").blur(function(){
+      //   console.log("blurring");
+      // })
+      $("#new_todo_title").focus();
       function openForm(evt){
         console.log(evt)
         $(evt.currentTarget).replaceWith("\
           <form id='edit_title' action='/todo_items/update/"+evt.currentTarget.id+"' method='post'> \
-          <input type='text' value='"+$(evt.currentTarget).text()+"' name='todo_title'/> \
+          <input id='title_edit_field' type='text' value='"+$(evt.currentTarget).text()+"' name='todo_title'/> \
           ");
-        $("#edit_title").blur(function(){
+        $("#title_edit_field").blur(function(){
           console.log("blurring");
-          $(this).html("<span> id='"+evt.currentTarget.id+"'"+$(evt.currentTarget).text()+"'" )
+          $(this.form).replaceWith("<span id='"+evt.currentTarget.id+"'>"+$(evt.currentTarget).text()+"</span>" )
         })
       }
       $('li span').bind('click', openForm)
