@@ -22,17 +22,18 @@ block content
       // })
       $("#new_todo_title").focus();
       function openForm(evt){
-        console.log(evt)
+        console.log(evt)  
         $(evt.currentTarget).replaceWith("\
           <form id='edit_title' action='/todo_items/update/"+evt.currentTarget.id+"' method='post'> \
           <input id='title_edit_field' type='text' value='"+$(evt.currentTarget).text()+"' name='todo_title'/> \
           ");
+        $("#title_edit_field").focus();
         $("#title_edit_field").blur(function(){
           console.log("blurring");
           $(this.form).replaceWith("<span id='"+evt.currentTarget.id+"'>"+$(evt.currentTarget).text()+"</span>" )
         })
       }
-      $('li span').bind('click', openForm)
+      $('#todo_items').on('click', 'li span',openForm)
       $("body").append(document.title)
       // $("body").hide().fadeIn(3000)
       pullquote = function(){
