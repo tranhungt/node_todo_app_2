@@ -45,9 +45,9 @@ block content
       console.log "hello from coffee"
       htmlizeItem = (todo_item) ->
           html_string = ""
-          html_string += "<li id='#{todo_item.id}'" 
+          html_string += "<li id='#{todo_item['_id']}'" 
           html_string += "<span class='item'>#{todo_item.title}</span>"
-          html_string +="<a class='delete_button' href='/todo_items/delete/#{todo_item.id}' data-id='#{todo_item.id}'>Delete</a>"
+          html_string +="<a class='delete_button' href='/todo_items/delete/#{todo_item['_id']}' data-id='#{todo_item['_id']}'>Delete</a>"
           html_string
 
 
