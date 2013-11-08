@@ -36,3 +36,6 @@ module.exports =
           res.send(todo_item.title)
         else
           res.render 'index'
+
+  random: (req, res) ->
+    res.render 'todo_items/random'
