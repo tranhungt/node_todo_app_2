@@ -24,10 +24,7 @@ block content
           <input id='title_edit_field' type='text' value='"+$(evt.currentTarget).text()+"' name='todo_title'/> \
           ");
         $("#title_edit_field").focus();
-        $("#title_edit_field").blur(function(){
-          console.log("blurring");
-          $(this.form).replaceWith("<span class='item' id='"+evt.currentTarget.id+"'>"+$(evt.currentTarget).text()+"</span>" )
-        })
+       
       }
 
       function submitNewTitle(evt){
@@ -36,7 +33,6 @@ block content
       }
 
       $('#todo_items').on('click', '.item', openForm);
-      //- $('#new_item_form').on('submit', submitNewTitle);
 
     })
 
@@ -50,6 +46,8 @@ block content
           html_string +="<a class='delete_button' href='/todo_items/delete/#{todo_item['_id']}' data-id='#{todo_item['_id']}'>Delete</a></li>"
           html_string
 
+      $("#todo_items").on "blur", "#title_edit_field", (evt) ->
+          $(this.form).replaceWith "<span class='item'>#{$(evt.currentTarget).val()}</span>"
 
       $('#new_item_form').on 'submit', (evt) ->
         $.post "/todo_items/create",
@@ -64,7 +62,8 @@ block content
       $('#todo_items').on 'click', '.delete_button', (evt) ->
         href = $(evt.currentTarget).attr('href')
         item_id = $(evt.currentTarget).attr('data-id')
-        $.get(href).done (data) ->
-          $("##{data.item_id}").remove() 
+        $.get href,
+          (data) ->
+            $("##{data.item_id}").remove() 
 
         false
