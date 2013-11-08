@@ -10,7 +10,7 @@ block content
     ul#todo_items
       each todo_item in todo_items
         li(id="#{todo_item.id}") 
-          span(class="item") #{todo_item.title}
+          span(class="item", data-id="#{todo_item.id}") #{todo_item.title}
           a(class="delete_button", href="/todo_items/delete/#{todo_item.id}", data-id="#{todo_item.id}") Delete
 
   script.
@@ -20,11 +20,10 @@ block content
       function openForm(evt){
         console.log(evt)  
         $(evt.currentTarget).replaceWith("\
-          <form id='edit_title' action='/todo_items/update/"+evt.currentTarget.id+"' method='post'> \
+          <form id='edit_title' action='/todo_items/update/"+$(evt.currentTarget).attr('data-id')+"' method='post'> \
           <input id='title_edit_field' type='text' value='"+$(evt.currentTarget).text()+"' name='todo_title'/> \
           ");
         $("#title_edit_field").focus();
-       
       }
 
       function submitNewTitle(evt){
@@ -46,8 +45,18 @@ block content
           html_string +="<a class='delete_button' href='/todo_items/delete/#{todo_item['_id']}' data-id='#{todo_item['_id']}'>Delete</a></li>"
           html_string
 
+
+      updateTitle = (form, evt) ->
+        $(form).replaceWith "<span class='item'>#{$(evt.currentTarget).val()}</span>"
+        $.post form.action,
+          $(form).serialize()
+
       $("#todo_items").on "blur", "#title_edit_field", (evt) ->
-          $(this.form).replaceWith "<span class='item'>#{$(evt.currentTarget).val()}</span>"
+        updateTitle(this.form, evt)
+
+      $("#todo_items").on "submit", "#edit_title", (evt) ->
+        evt.preventDefault()
+        updateTitle(this, evt)
 
       $('#new_item_form').on 'submit', (evt) ->
         $.post "/todo_items/create",
