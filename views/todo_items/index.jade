@@ -13,6 +13,12 @@ block content
           span(class="item", data-id="#{todo_item.id}") #{todo_item.title}
           a(class="delete_button", href="/todo_items/delete/#{todo_item.id}", data-id="#{todo_item.id}") Delete
 
+    ul(class="nav navbar-nav navbar-fixed-bottom")
+      li Created By: Hung Tran
+      li Using: Nodejs, MongoDb
+      li
+        a(href="http://hungtran.co") About Me
+
   script.
     $(function(){
       $("#new_todo_title").focus();
@@ -34,6 +40,7 @@ block content
       $('#todo_items').on('click', '.item', openForm);
 
     })
+
 
   :coffeescript
     $ ->
